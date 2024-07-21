@@ -24,8 +24,34 @@ function ExerciseAccordion() {
     });
     setExercises(updatedExercises);
   };
+
+  const handleDeleteSet = (exerciseIndex, setIndex) => {
+    const updatedExercises = exercises.map((exercise, exIndex) => {
+      if (exIndex === exerciseIndex) {
+        const updatedSets = exercise.sets.filter(
+          (_, stIndex) => stIndex !== setIndex
+        );
+        return { ...exercise, sets: updatedSets };
+      }
+      return exercise;
+    });
+    setExercises(updatedExercises);
+  };
+
+  const handleAddSet = (exerciseIndex) => {
+    const newSet = { reps: '', weight: '', rpe: '' };
+    const updatedExercises = exercises.map((exercise, exIndex) => {
+      if (exIndex === exerciseIndex) {
+        const updatedSets = [...exercise.sets, newSet];
+        return { ...exercise, sets: updatedSets };
+      }
+      return exercise;
+    });
+    setExercises(updatedExercises);
+  };
+
   const defaultValues = exercises.map((exercise, index) => `item-${index}`);
-  console.log(defaultValues);
+
   return (
     <Accordion.Root
       className='AccordionRoot'
@@ -43,6 +69,8 @@ function ExerciseAccordion() {
             <ExerciseTable
               exercise={exercise}
               onChange={handleInputChange}
+              onDeleteSet={handleDeleteSet}
+              onAddSet={handleAddSet}
               exerciseIndex={index}
             ></ExerciseTable>
           </AccordionContent>
