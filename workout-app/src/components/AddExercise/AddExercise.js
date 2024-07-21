@@ -7,6 +7,7 @@ import { ExercisesContext } from '@/components/ExercisesProvider/ExercisesProvid
 function AddExercise() {
   const [sets, setSets] = React.useState(3);
   const [exerciseName, setExerciseName] = React.useState('');
+  const [dialogOpen, setDialogOpen] = React.useState(false);
   const { exercises, setExercises } = React.useContext(ExercisesContext);
 
   const handleAddExercise = (e) => {
@@ -24,15 +25,15 @@ function AddExercise() {
 
     setExerciseName('');
     setSets(3);
+    setDialogOpen(false);
   };
-
-  console.log('Exercises:', exercises);
-
   return (
-    <div>
-      <Dialog.Root>
+    <div className='add-exercise-wrapper'>
+      <Dialog.Root open={dialogOpen} onOpenChange={setDialogOpen}>
         <Dialog.Trigger asChild>
-          <button className='Button violet'>Add Exercise</button>
+          <button className='Button violet' onClick={() => setDialogOpen(true)}>
+            Add Exercise
+          </button>
         </Dialog.Trigger>
         <Dialog.Portal>
           <Dialog.Overlay className='DialogOverlay' />
@@ -79,7 +80,11 @@ function AddExercise() {
               </div>
             </form>
             <Dialog.Close asChild>
-              <button className='IconButton' aria-label='Close'>
+              <button
+                className='IconButton'
+                aria-label='Close'
+                onClick={() => setDialogOpen(false)}
+              >
                 Close
               </button>
             </Dialog.Close>
