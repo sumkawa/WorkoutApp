@@ -1,0 +1,80 @@
+/* styles/globals.css or src/components/AddExercise/AddExercise.module.css */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.button {
+  padding: 10px 20px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #005bb5;
+}
+
+.dialogOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialogContent {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dialogTitle {
+  margin: 0;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.dialogDescription {
+  margin: 0;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.exerciseList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.exerciseButton {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  color: #333;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.exerciseButton:hover {
+  background-color: #f0f0f0;
+}
+
+.exerciseButton.selected {
+  background-color: #0070f3;
+  color: white;
+  border-color: #0070f3;
+}

@@ -1,0 +1,39 @@
+{
+  "username": "johnny",
+  "workouts": [
+    {
+      "date": "2026-05-30",
+      "exercises": [
+        {
+          "name": "bench press",
+          "sets": [
+            {
+              "reps": 1,
+              "RPE": 8,
+              "goal": 8,
+              "weight": 120
+            },
+            {
+              "reps": 5,
+              "RPE": 9,
+              "goal": 9,
+              "weight": 120
+            },
+            {
+              "reps": 6,
+              "RPE": 9,
+              "goal": 9,
+              "weight": 115
+            },
+            {
+              "reps": 3,
+              "RPE": 10,
+              "goal": 10,
+              "weight": 100
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
