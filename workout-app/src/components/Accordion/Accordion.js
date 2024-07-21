@@ -1,40 +1,53 @@
+'use client';
 import React from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
 import classNames from 'classnames';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import './styles.css';
-
+import { ExercisesContext } from '@/components/ExercisesProvider/ExercisesProvider';
+import ExerciseTable from '../ExerciseTable';
 function ExerciseAccordion() {
+  const { exercises, setExercises } = React.useContext(ExercisesContext);
+
+  const handleInputChange = (exerciseIndex, setIndex, field, value) => {
+    const updatedExercises = exercises.map((exercise, exIndex) => {
+      if (exIndex === exerciseIndex) {
+        const updatedSets = exercise.sets.map((set, stIndex) => {
+          if (stIndex === setIndex) {
+            return { ...set, [field]: value };
+          }
+          return set;
+        });
+        return { ...exercise, sets: updatedSets };
+      }
+      return exercise;
+    });
+    setExercises(updatedExercises);
+  };
+  const defaultValues = exercises.map((exercise, index) => `item-${index}`);
+  console.log(defaultValues);
   return (
     <Accordion.Root
       className='AccordionRoot'
-      type='single'
-      defaultValue='item-1'
-      collapsible
+      type='multiple'
+      defaultValue={defaultValues}
     >
-      <Accordion.Item className='AccordionItem' value='item-1'>
-        <AccordionTrigger>Is it accessible?</AccordionTrigger>
-        <AccordionContent>
-          Yes. It adheres to the WAI-ARIA design pattern.
-        </AccordionContent>
-      </Accordion.Item>
-
-      <Accordion.Item className='AccordionItem' value='item-2'>
-        <AccordionTrigger>Is it unstyled?</AccordionTrigger>
-        <AccordionContent>
-          Yes. It's unstyled by default, giving you freedom over the look and
-          feel.
-        </AccordionContent>
-      </Accordion.Item>
-
-      <Accordion.Item className='AccordionItem' value='item-3'>
-        <AccordionTrigger>Can it be animated?</AccordionTrigger>
-        <Accordion.Content className='AccordionContent'>
-          <div className='AccordionContentText'>
-            Yes! You can animate the Accordion with CSS or JavaScript.
-          </div>
-        </Accordion.Content>
-      </Accordion.Item>
+      {exercises.map((exercise, index) => (
+        <Accordion.Item
+          className='AccordionItem'
+          value={`item-${index}`}
+          key={index}
+        >
+          <AccordionTrigger>{exercise.name}</AccordionTrigger>
+          <AccordionContent>
+            <ExerciseTable
+              exercise={exercise}
+              onChange={handleInputChange}
+              exerciseIndex={index}
+            ></ExerciseTable>
+          </AccordionContent>
+        </Accordion.Item>
+      ))}
     </Accordion.Root>
   );
 }
