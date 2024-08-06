@@ -63,7 +63,6 @@
   min-width: 375px;
   max-width: 80%;
   min-height: 650px;
-  height: 00px;
   background: var(--color-widget-background);
   border-radius: 10px;
   width: 80%;
@@ -215,7 +214,7 @@
 .form__field:focus {
   ~ .form__label {
     position: absolute;
-    margin-bottom: 200px;
+    margin-bottom: auto;
     top: 0;
     display: block;
     transition: 0.2s;
@@ -304,8 +303,8 @@
 .form__group__paragraph {
   position: relative;
   padding: 15px 0 0;
-  margin-top: 50px;
-  margin-bottom: 150px;
+  margin-top: 200px;
+  margin-bottom: 10px;
   width: 50%;
 }
 
@@ -342,7 +341,7 @@
 .form__field__paragraph:focus {
   ~ .form__label {
     position: absolute;
-    margin-bottom: 200px;
+    margin-bottom: auto;
     top: 0;
     display: block;
     transition: 0.2s;
@@ -385,4 +384,61 @@
   line-height: 72px;
   position: relative;
   z-index: 3;
+}
+
+.time-text {
+  --on-background: #ffffff;
+  background-image: linear-gradient(
+    to bottom,
+    var(--on-background) 50%,
+    transparent
+  );
+  letter-spacing: -1px;
+  text-shadow: rgba(255, 0, 0, 0.8) 0px 0px 4px;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  line-height: 72px;
+  position: relative;
+  z-index: 3;
+}
+
+.location-text {
+  --on-background: #ffffff;
+  background-image: linear-gradient(
+    to bottom,
+    var(--on-background) 50%,
+    transparent
+  );
+  letter-spacing: -1px;
+  text-shadow: rgba(21, 255, 0, 0.8) 0px 0px 4px;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  line-height: 72px;
+  position: relative;
+  z-index: 3;
+}
+.confirmation-text {
+  font-size: 3rem;
+}
+
+.footer-submission {
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 4rem;
+  position: relative;
+}
+
+.button-submission {
+  border: 1px solid var(--color-border);
+  background-color: var(--green-10);
+  padding: 25px;
+  border-radius: 10px;
+}
+.button-submission:hover {
+  background-color: var(--green-8);
 }
