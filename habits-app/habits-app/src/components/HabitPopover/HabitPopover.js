@@ -3,14 +3,29 @@ import React from 'react';
 import { PlusIcon, ArrowRightIcon, ArrowLeftIcon } from '@radix-ui/react-icons';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import './styles.css';
-
+import TimePicker from 'react-time-picker';
 import * as Dialog from '@radix-ui/react-dialog';
+
+const weekValues = {
+  sunday: false,
+  monday: false,
+  tuesday: false,
+  wednesday: false,
+  thursday: false,
+  friday: false,
+  saturday: false,
+};
 
 function HabitPopover() {
   const [habitTitle, setHabitTitle] = React.useState('');
   const [behavior, setBehavior] = React.useState('');
-  const [time, setTime] = React.useState('');
+  const [time, setTime] = React.useState('10:00');
+  const [dialogOpen, setDialogOpen] = React.useState(false);
   const [location, setLocation] = React.useState('');
+  const [weekdays, setWeekdays] = React.useState(weekValues);
+  const [isAM, setIsAm] = React.useState('AM');
+
+  const weekdaysList = Object.keys(weekValues);
 
   const wrapperRef = React.useRef(null);
 
@@ -34,23 +49,57 @@ function HabitPopover() {
     }
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setDialogOpen(false);
+    console.log('submitted');
+    console.log(weekdays);
+    // would normally be an API post request
+  };
+
+  const handleWeekdayChange = (day) => {
+    setWeekdays((prev) => ({
+      ...prev,
+      [day]: !prev[day],
+    }));
+  };
+
+  function convertTwentyFourToString(dateString) {
+    let hour = Number(dateString.slice(0, 2));
+    const minute = dateString.slice(3);
+
+    if (hour >= 12) {
+      hour = hour > 12 ? hour - 12 : hour;
+    } else {
+      hour = hour === 0 ? 12 : hour;
+    }
+
+    const stringTime = `${hour}:${minute}`;
+    return stringTime;
+  }
+
+  function isAmOrPm(dateString) {
+    const hour = Number(dateString.slice(0, 2));
+    return hour >= 12 ? 'PM' : 'AM';
+  }
+
   React.useEffect(() => {
-    function handleKeyDown(event) {
+    const handleKeyDown = (event) => {
       if (event.key === 'Enter') {
         scrollNext();
       }
-    }
+    };
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  });
+  }, []);
 
   return (
     <div className='popover-container'>
-      <Dialog.Root>
+      <Dialog.Root open={dialogOpen} onOpenChange={setDialogOpen}>
         <Dialog.Trigger>
-          <PlusIcon width='25' height='25' />
+          <PlusIcon width='25' height='25' className='icon-opener' />
         </Dialog.Trigger>
         <Dialog.Portal>
           <Dialog.Overlay className='PopoverDialogOverlay'>
@@ -139,11 +188,7 @@ function HabitPopover() {
                   </h3>
 
                   <div className='footer'>
-                    <button
-                      className='button'
-                      onClick={scrollLast}
-                      disabled={habitTitle === ''}
-                    >
+                    <button className='button' onClick={scrollLast}>
                       <ArrowLeftIcon className='icon' width='35' height='35' />
                     </button>
                     <button
@@ -173,38 +218,45 @@ function HabitPopover() {
                     ) : (
                       <div>
                         I will <span className='behavior-text'>{behavior}</span>{' '}
-                        at <span className='time-text'>{time}</span> in
-                        [location]
+                        at{' '}
+                        <span className='time-text'>
+                          {`${convertTwentyFourToString(
+                            time,
+                            setIsAm
+                          )} ${isAmOrPm(time)}`}
+                        </span>{' '}
+                        in [location]
                       </div>
                     )}
                   </div>
-                  <h3>
-                    <div className='form__group__paragraph field'>
-                      <input
-                        type='input'
-                        className='form__field__paragraph'
-                        placeholder='8 AM'
-                        name='time'
-                        id='time'
-                        spellCheck={false}
-                        required
-                        value={time}
-                        onChange={(event) => {
-                          setTime(event.target.value);
-                        }}
-                      />
-                      <label htmlFor='name' className='form__label__paragraph'>
-                        Time
-                      </label>
+                  <div className='weekday-input-container'>
+                    <div className='weekDays-selector'>
+                      {weekdaysList.map((day) => (
+                        <React.Fragment key={day}>
+                          <input
+                            type='checkbox'
+                            id={`weekday-${day}`}
+                            className='weekday'
+                            checked={weekdays[day]}
+                            onChange={() => handleWeekdayChange(day)}
+                          />
+                          <label htmlFor={`weekday-${day}`}>
+                            {day.charAt(0).toUpperCase()}
+                          </label>
+                        </React.Fragment>
+                      ))}
                     </div>
-                  </h3>
-
+                  </div>
+                  <div className='time-input-container'>
+                    <TimePicker
+                      onChange={setTime}
+                      value={time}
+                      disableClock={true}
+                      clearIcon={null}
+                    />
+                  </div>
                   <div className='footer'>
-                    <button
-                      className='button'
-                      onClick={scrollLast}
-                      disabled={habitTitle === ''}
-                    >
+                    <button className='button' onClick={scrollLast}>
                       <ArrowLeftIcon className='icon' width='35' height='35' />
                     </button>
                     <button
@@ -216,6 +268,7 @@ function HabitPopover() {
                     </button>
                   </div>
                 </div>
+
                 <div className='box four'>
                   <h1 className='animate-character-second'>Location</h1>
                   <h2 className='secondary-text'>
@@ -249,17 +302,13 @@ function HabitPopover() {
                         }}
                       />
                       <label htmlFor='name' className='form__label__paragraph'>
-                        Behavior
+                        Location
                       </label>
                     </div>
                   </h3>
 
                   <div className='footer'>
-                    <button
-                      className='button'
-                      onClick={scrollLast}
-                      disabled={habitTitle === ''}
-                    >
+                    <button className='button' onClick={scrollLast}>
                       <ArrowLeftIcon className='icon' width='35' height='35' />
                     </button>
                     <button
@@ -274,21 +323,27 @@ function HabitPopover() {
 
                 <div className='box five'>
                   <h1 className='animate-character-second'>{habitTitle}</h1>
+                  <h2 className='secondary-text'>How's it look?</h2>
                   <div className='input-paragraph'>
-                    {location === '' ? (
-                      <div>I will [behavior] at [time] in [location]</div>
-                    ) : (
-                      <div className='confirmation-text'>
-                        I will <span className='behavior-text'>{behavior}</span>{' '}
-                        at <span className='time-text'>{time}</span> in{' '}
-                        <span className='location-text'>{location}</span>
-                      </div>
-                    )}
+                    <div>
+                      I will <span className='behavior-text'>{behavior}</span>{' '}
+                      at <span className='time-text'>{time}</span> in{' '}
+                      <span className='location-text'>{location}</span>
+                    </div>
                   </div>
+                  <h3 className='submit-button-container'>
+                    <form onSubmit={handleSubmit}>
+                      <input
+                        className='button-submission'
+                        value='Looks Good!'
+                        type='submit'
+                      ></input>
+                    </form>
+                  </h3>
 
-                  <div className='footer-submission'>
-                    <button className='button-submission' onClick={scrollNext}>
-                      Make your habit
+                  <div className='footer'>
+                    <button className='button' onClick={scrollLast}>
+                      <ArrowLeftIcon className='icon' width='35' height='35' />
                     </button>
                   </div>
                 </div>

@@ -1,11 +1,13 @@
 import React from 'react';
 import styles from './page.module.css';
-
+// import { readFile, writeFile } from '../../../helpers/file-helpers';
 // import * as Avatar from '@radix-ui/react-avatar';
 // import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 
 import HabitCard from '@/components/HabitCard';
 import HabitPopover from '@/components/HabitPopover';
+
+// const DATABASE_PATH = '/src/database.json';
 
 export default function Profile({ params }) {
   const data = [
@@ -30,6 +32,7 @@ export default function Profile({ params }) {
           location: 'Neighborhood park',
           tagName: 'Fitness',
           identity: 'An active person',
+          daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
           datesRepeated: [
             { date: '2024-07-01', count: 1 },
             { date: '2024-07-02', count: 1 },
@@ -53,6 +56,7 @@ export default function Profile({ params }) {
           location: 'Living room',
           tagName: 'Learning',
           identity: 'A knowledgeable person',
+          daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Sat'],
           datesRepeated: [
             { date: '2024-07-05', count: 1 },
             { date: '2024-07-06', count: 1 },
@@ -86,6 +90,7 @@ export default function Profile({ params }) {
           location: 'home office',
           tagName: 'Wellness',
           identity: 'A mindful person',
+          daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
           datesRepeated: [
             { date: '2024-06-22', count: 5 },
             { date: '2024-06-23', count: 25 },
@@ -118,6 +123,7 @@ export default function Profile({ params }) {
           location: 'various locations',
           tagName: 'Health',
           identity: 'A hydrated person',
+          daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
           datesRepeated: [
             { date: '2024-06-25', count: 1 },
             { date: '2024-06-26', count: 1 },
